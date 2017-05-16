@@ -111,6 +111,9 @@ public class Wumpus {
 		return location;
 	}
 	
+	/*
+	 * Checking for end-game conditions (death or exit)
+	 */
 	public static boolean checkForEnd(int current){
 		if(roomList[current].getRoomOccupant().equals("pitfall")){
 			System.out.println("You seem to have been falling for quite a while now...You begin to wonder where the bottom is...");
@@ -125,6 +128,9 @@ public class Wumpus {
 		return false;
 	}
 	
+	/*
+	 * Checking for bats that cause the player to return to the previous room
+	 */
 	public static int checkForBats(int current, int next){
 		if(roomList[next].getRoomOccupant().equals("bats")){
 			System.out.println("AHHH! You ran into bats and ran back to the room you came from.");
@@ -134,11 +140,17 @@ public class Wumpus {
 		return next;
 	}
 	
+	/*
+	 * Moving the entity to the next room and emptying the previous one
+	 */
 	public static void moveEntity(int current, int next, String entity){
 		roomList[next].setRoom(entity);
 		roomList[current].setRoom("");
 	}
 	
+	/*
+	 * Checking if an integer exists in the int array
+	 */
 	public static boolean inList(int[] tempList, int key){
 		for(int test: tempList){
 			if(test == key){
@@ -148,12 +160,15 @@ public class Wumpus {
 		return false;
 	}
 	
+	/*
+	 * Finding the adjacent room on the map according to which room is selected
+	 */
 	public static int[] findAdjacentRooms(int roomNumber){
 		//System.out.println("\tCurrently looking at room: " + roomNumber);
 		int[] adjacentRooms = new int[3];
-		if(roomNumber < 10){
+		if(roomNumber < ROOMCOUNT){
 			if(roomNumber == 0){
-				adjacentRooms[0] = 9;
+				adjacentRooms[0] = ROOMCOUNT-1;
 			} else {
 				adjacentRooms[0] = roomNumber - 1;
 			}
@@ -165,13 +180,13 @@ public class Wumpus {
 			}
 		} else {
 			if(roomNumber == 10){
-				adjacentRooms[0] = 19;
+				adjacentRooms[0] = 2*ROOMCOUNT-1;
 			} else {
 				adjacentRooms[0] = roomNumber - 1;
 			}
 			adjacentRooms[1] = roomNumber - 10;
 			if(roomNumber == 19){
-				adjacentRooms[2] = 10;
+				adjacentRooms[2] = ROOMCOUNT;
 			} else {
 				adjacentRooms[2] = roomNumber + 1;
 			}
@@ -189,6 +204,10 @@ public class Wumpus {
 		return adjacentRooms;
 	}
 	
+	/*
+	 * Printing a visual based map that allows the user to see the connections between the rooms
+	 * as well as see which entity is in the room
+	 */
 	public static void printMap(){
 		//System.out.println("Printing Visual Map...");
 		int totalRoomCount = 2 * ROOMCOUNT;
@@ -207,6 +226,11 @@ public class Wumpus {
 		}
 	}
 	
+	/*
+	 * Generates the map according to the ROOMCOUNT constant defined at the top of the program
+	 * Inner loop will exist from 0 <= roomNumber < ROOMCOUNT
+	 * Outer loop will exist from ROOMCOUNT <= roomNumber < 2*ROOMCOUNT
+	 */
 	public static void generateMap(){
 		//System.out.println("Generating Map...");
 		int totalRoomCount = 2 * ROOMCOUNT;
